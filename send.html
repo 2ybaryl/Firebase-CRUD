@@ -4,11 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./styles.css" rel="stylesheet">
+    <style>
+         button{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 2rem;
+    border-radius: 5px;
+    padding: 3%;
+    background-color: #888;
+    color: #eee;
+    border: none;
+}
+    </style>
     <title>Send</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Send Data</h1>
+    <div class="add">
+        <a href="/fetch.html"><img src="./assets/logos/file-text.svg" width="30rem"></a>
+    </div>
+    <div class="line"></div>
+    <div class="container" style="display: flex; align-items: center; flex-direction: column;">
+        <h1>Add a Note</h1>
+        <div class="card" style="width: 50%; height: 50%;">
+            <div class="head">
+                <input type="text" placeholder="Note Title" id="title" style="font-size: 2rem;">
+            </div>
+            <hr>
+            <div class="body" style="height: 60%;">
+                <textarea rows='6' id="message" placeholder="Enter your message here" style="font-size: 2rem;"></textarea>
+            </div>
+                    <button>Save</button>
+        </div>
+        <!-- <h1>Send Data</h1>
         <div class="form">
             <label>Name</label>
             <input type = "text">
@@ -18,7 +45,7 @@
             <textarea></textarea>
             <button>Submit</button>
         </div>
-        <a class = "view" href = "fetch.html">View Data</a>
+        <a class = "view" href = "fetch.html">View Data</a> -->
     </div>
     <!-- add firebase CDN -->
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
@@ -35,15 +62,16 @@ const submit = document.querySelector('button');
 submit.onclick = () => sendData()
 
 function sendData(){
-    var name = document.querySelectorAll('input')[0];
-    var email = document.querySelectorAll('input')[1];
-    var message = document.querySelector('textarea');
+    const date=new Date();
+    var name = document.getElementById('title');
+    var email = date.toISOString();
+    var message = document.getElementById('message');
     // send data
 var listRef = database.ref('messages/')
 var newRef = listRef.push()
 newRef.set({
     'name': name.value,
-    'email': email.value,
+    'email': email,
     'message': message.value
 })
 console.log("Data sent");
