@@ -28,13 +28,13 @@
     <div class="line"></div>
     <div class="container" style="display: flex; align-items: center; flex-direction: column;">
         <h1>Add a Note</h1>
-        <div class="card" style="width: 50%; height: 50%;position: relative;">
+        <div class="card" style="width: 50%; height: 60%;position: relative;">
             <div class="head">
                 <input type="text" placeholder="Note Title" id="title" style="font-size: 2rem;">
             </div>
             <hr>
-            <div class="body" style="height: 60%;">
-                <textarea rows='6' id="message" placeholder="Enter your message here" style="font-size: 2rem;"></textarea>
+            <div class="body" style="height:auto; margin-bottom: 0;">
+                <textarea rows='6' id="message" placeholder="Enter your message here" style="font-size: 2rem; height: 100%;"></textarea>
             </div>
                     <button>Save</button>
         </div>
@@ -83,6 +83,8 @@ setTimeout(()=>{
     document.getElementById('save-message').style.display='block';
 }, 1000)
 setTimeout(()=>{
+    document.getElementById('title').value=null;
+    document.getElementById('message').value=null;
     document.getElementById('save-message').style.display='none';
 }, 3000)
 }
