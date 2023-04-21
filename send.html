@@ -19,6 +19,11 @@
                 width: 100%;
 }
     </style>
+    <script>
+        if(!localStorage.getItem('uid')){
+            window.location.href='./login.html';
+        }
+    </script>
     <title>Save a note</title>
 </head>
 <body>
@@ -74,6 +79,7 @@ function sendData(){
 var listRef = database.ref('messages/')
 var newRef = listRef.push()
 newRef.set({
+    'uid' : localStorage.getItem('uid'),
     'name': name.value,
     'email': email,
     'message': message.value

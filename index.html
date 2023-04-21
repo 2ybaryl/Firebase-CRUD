@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./styles.css" rel="stylesheet">
     <title>View</title>
+    <script>
+        if(!localStorage.getItem('uid')){
+            window.location.href='./login.html';
+        }
+    </script>
 </head>
 <body>
     <div class="add">
         <a href="./send.html"><img src="./assets/logos/plus-circle-white.svg" width="30rem"></a>
+        <button type="button" id="logout-btn" style="margin-top: 25rem; outline: none; background: none; border: 1px solid white; color: white; font-size: 1rem; padding: 3%;">Logout</button>
     </div>
     <div class="line"></div>
     <div class="container" id="notes-container">
@@ -34,6 +40,7 @@ function remove(id){
 function updateNow(id, count){
     const date = new Date();
     var obj = {
+        'uid' : localStorage.getItem('uid'),
         'name': document.getElementById(`title-${count}`).value,
         'email': date.toISOString(),
         'message': document.getElementById(`message-${count}`).value
@@ -47,28 +54,30 @@ fetchedData.on('value', (snapshot) => {
     var htmlData = '';
     let count=0;
     for(var key in data){
-        var value = data[key];
-        const date=value.email.substring(0,10) + " / " + value.email.substring(11, 19);
-        htmlData += `
-        <div class="card">
-            <div class="head">
-                <input type="text" placeholder="Note name" id="title-${count}" value='${value.name}''>
-            </div>
-            <hr>
-            <div class="body">
-                <textarea rows='6' id="message-${count}">${value.message}</textarea>
-            </div>
-            <div class="foot">
-                <span class="time">
-                    ${date}
-                </span>
-                <div class="del-button">
-                    <button onclick = "updateNow('${key}', ${count})">Update</button>
-                    <button onclick = "remove('${key}')">Delete</button>
+        if(data[key].uid===localStorage.getItem('uid')){
+            var value = data[key];
+            const date=value.email.substring(0,10) + " / " + value.email.substring(11, 19);
+            htmlData += `
+            <div class="card">
+                <div class="head">
+                    <input type="text" placeholder="Note name" id="title-${count}" value='${value.name}''>
                 </div>
-            </div>
-        </div>`;
-        count++;
+                <hr>
+                <div class="body">
+                    <textarea rows='6' id="message-${count}">${value.message}</textarea>
+                </div>
+                <div class="foot">
+                    <span class="time">
+                        ${date}
+                    </span>
+                    <div class="del-button">
+                        <button onclick = "updateNow('${key}', ${count})">Update</button>
+                        <button onclick = "remove('${key}')">Delete</button>
+                    </div>
+                </div>
+            </div>`;
+            count++;
+        }
         // <tr>
         //             <td>${value.name}</td>
         //             <td>${value.email}</td>
@@ -79,6 +88,10 @@ fetchedData.on('value', (snapshot) => {
         //             </td>
         // </tr>`;
     }
+    document.getElementById('logout-btn').addEventListener('click', ()=>{
+        localStorage.clear();
+        window.location.href='./login.html';
+    })
 
     setTimeout(()=>{
         dataContainer.style='';
